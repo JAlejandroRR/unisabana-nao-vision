@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import net.semanticmetadata.lire.DocumentBuilder;
 import net.semanticmetadata.lire.ImageSearchHits;
 import net.semanticmetadata.lire.ImageSearcher;
@@ -168,8 +169,10 @@ public class ImagenBusqueda
     }
      
      
-         public ArrayList testSearchDefault(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
+         public Hashtable testSearchDefault(BufferedImage bimg) throws IOException {
+             
+        Hashtable listaImagenesPesos  = new Hashtable();                 
+       
         // Opening an IndexReader (Lucene v3.0+)
         IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
         // Creating an ImageSearcher
@@ -180,25 +183,20 @@ public class ImagenBusqueda
         // Reading the sample image, which is our "query"
         // Search for similar images
         ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+        System.out.println(Integer.toString(hits.length()));        
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
         hits = searcher.search(document, reader);
 
         for (int i = 0; i < 4; i++) {
             System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
+                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());            
+            listaImagenesPesos.put((hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue()), hits.score(i));
         }
-        return listaImagenesConcidencias;
+        return listaImagenesPesos;
     }
+         
+         
           public ArrayList testSearchEdgeHistogram(BufferedImage bimg) throws IOException {
         ArrayList listaImagenesConcidencias = new ArrayList();
         // Opening an IndexReader (Lucene v3.0+)
