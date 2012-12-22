@@ -12,12 +12,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import java.util.Comparator;
 
 /**
  *
@@ -30,6 +35,8 @@ public class FrameBuscar extends javax.swing.JFrame {
      */
      JFileChooser fc = new JFileChooser();
      String foto = new String();
+     Hashtable listaImagenesPesos  = new Hashtable();
+     Hashtable listaImagenesPesosFinal  = new Hashtable();
       ArrayList listaImagenes = new ArrayList();
       
     public FrameBuscar() {
@@ -204,7 +211,7 @@ public class FrameBuscar extends javax.swing.JFrame {
                   if (opcion.equals("Default Document"))
                 {
                     busqueda.setIndexPath("Default-Document");
-                     listaImagenes = busqueda.testSearchDefault(bimg);
+                     listaImagenesPesos = busqueda.testSearchDefault(bimg);
                 }
                    if (opcion.equals("Edge Histogram"))
                 {
@@ -259,6 +266,33 @@ public class FrameBuscar extends javax.swing.JFrame {
            String CategoriaDeLaImagen = dicCategoria.get(texto).toString();
            TextoArea += CategoriaDeLaImagen + "  " +  texto.toString() + " \n\r";
         }
+        
+        Enumeration e = listaImagenesPesos.keys();  
+                Object obj;  
+                   while (e.hasMoreElements()) 
+                   {                        
+                      obj = e.nextElement();                        
+                      if(listaImagenesPesosFinal.containsKey(dicCategoria.get(obj).toString()))
+                      {
+                        String categoria =  dicCategoria.get(obj).toString();                        
+                        float val3 = Float.valueOf(listaImagenesPesosFinal.get(categoria).toString()) + Float.valueOf(listaImagenesPesos.get(obj).toString());
+                        listaImagenesPesosFinal.put(dicCategoria.get(obj).toString(),val3);
+                      }
+                      else
+                      {
+                        listaImagenesPesosFinal.put(dicCategoria.get(obj).toString(),listaImagenesPesos.get(obj));
+                      }
+                      System.out.println(" key "+ dicCategoria.get(obj).toString() +": "+ listaImagenesPesos.get(obj));  
+                   }           
+        
+        float Value; 
+       
+         ArrayList myArrayList=new ArrayList(listaImagenesPesosFinal.entrySet());
+      
+         //Sort the values based on values first and then keys.
+        Collections.sort(myArrayList, new MyComparator());
+         
+        
         this.jTextArea2.setText(TextoArea);
     }//GEN-LAST:event_jButton3ActionPerformed
 
