@@ -34,397 +34,193 @@ public class ImagenBusqueda
         this.indexPath = indexPath;
     }    
     
-    
-    
-    public ArrayList testSearchAutoColorCorrelogram(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
+    public ArrayList DefaultImplementacion(BufferedImage bimg,String caracteristica) throws IOException
+    {
+       ArrayList listaImagenesConcidencias = new ArrayList();
         // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createAutoColorCorrelogramImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
+       IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
+       ImageSearchHits hits = null;
+        switch (caracteristica) 
+        {
+            case "Auto Color Correlogram":
+                hits = testSearchAutoColorCorrelogram(bimg,reader);
+                break;
+            case "CEDD Document":
+                hits = testSearchCEDD(bimg,reader);
+                break;
+            case "Default Document":
+                hits = testSearchDefault(bimg,reader);
+                break;
+            case "Color Histogram":
+                hits = testSearchColorHistogram(bimg,reader);
+                break;                
+            case "Color Layout":
+                hits = testSearchColorLayout(bimg,reader);
+                break;
+            case "Edge Histogram":
+                hits = testSearchEdgeHistogram(bimg,reader);
+                break;
+            case "FCTHD":
+                hits = testSearchFCTH(bimg,reader);
+                break;
+            case "GaborDocument":
+                hits = testSearchGabor(bimg,reader);
+                break;
+            case "JCDDocument":
+                hits = testSearchJCD(bimg,reader);
+                break;
+            case "JpegCoefficientHistogramDocument":
+                hits = testSearchCoefficientHistogram(bimg,reader);
+                break;
+            case "ScalableColor":
+                hits = testSearchScalableColor(bimg,reader);
+                break;
+            case "TamuraDocument":
+                hits = testSearchTamura(bimg,reader);
+                break;                                 
+                
+          
         }
-        // Get a document from the results
-        Document document = hits.doc(0);
-        // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
+       
         for (int i = 0; i < 4; i++) {
             System.out.println(hits.score(i) + ": "
                     + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
             listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
         }
-        return listaImagenesConcidencias;
+        
+        
+        
+       return listaImagenesConcidencias;
     }
     
     
     
-     public ArrayList testSearchCEDD(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createCEDDImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
+    public ImageSearchHits testSearchAutoColorCorrelogram(BufferedImage bimg,IndexReader reader) throws IOException {
+        
+        ImageSearcher searcher = ImageSearcherFactory.createAutoColorCorrelogramImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//      
+        ImageSearchHits hits = searcher.search(bimg, reader);                 
         // Get a document from the results
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);        
+        return hits;
     }
-     
-     
-      public ArrayList testSearchColorHistogram(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createColorHistogramImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+    
+    
+    
+     public ImageSearchHits testSearchCEDD(BufferedImage bimg,IndexReader reader) throws IOException {
+        
+        ImageSearcher searcher = ImageSearcherFactory.createCEDDImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//        
+        ImageSearchHits hits = searcher.search(bimg, reader);            
+        Document document = hits.doc(0);       
+        hits = searcher.search(document, reader);      
+        return hits;
+    }
+    
+     public ImageSearchHits testSearchDefault(BufferedImage bimg,IndexReader reader) throws IOException {       
+       
+        ImageSearcher searcher = ImageSearcherFactory.createDefaultSearcher();//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//        
+        ImageSearchHits hits = searcher.search(bimg, reader);       
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);       
+        return hits;       
+    }
+         
+     
+      public ImageSearchHits testSearchColorHistogram(BufferedImage bimg,IndexReader reader) throws IOException {
+        
+        ImageSearcher searcher = ImageSearcherFactory.createColorHistogramImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//       
+        ImageSearchHits hits = searcher.search(bimg, reader);        
+        Document document = hits.doc(0);
+        // Search for similar Documents based on the image  features
+        hits = searcher.search(document, reader);        
+        return hits;
     }
       
       
-       public ArrayList testSearchColorLayout(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
+       public ImageSearchHits testSearchColorLayout(BufferedImage bimg,IndexReader reader) throws IOException {
+       
         ImageSearcher searcher = ImageSearcherFactory.createColorLayoutImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+        
+        ImageSearchHits hits = searcher.search(bimg, reader);        
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
-    }
-     
-     
-         public Hashtable testSearchDefault(BufferedImage bimg) throws IOException {
-             
-        Hashtable listaImagenesPesos  = new Hashtable();                 
-       
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createDefaultSearcher();//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));        
-        Document document = hits.doc(0);
-        // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());            
-            listaImagenesPesos.put((hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue()), hits.score(i));
-        }
-        return listaImagenesPesos;
-    }
+        hits = searcher.search(document, reader);       
+        return hits;
+    }      
          
-         
-          public ArrayList testSearchEdgeHistogram(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
+       public ImageSearchHits testSearchEdgeHistogram(BufferedImage bimg,IndexReader reader) throws IOException {       
         ImageSearcher searcher = ImageSearcherFactory.createEdgeHistogramImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+       
+        ImageSearchHits hits = searcher.search(bimg, reader);        
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);        
+        return hits;
     }
-         
-     public ArrayList testSearchGabor(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
+       
+    public ImageSearchHits testSearchFCTH(BufferedImage bimg,IndexReader reader) throws IOException {
+        
         // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createGaborImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+        ImageSearcher searcher = ImageSearcherFactory.createFCTHImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//        
+        ImageSearchHits hits = searcher.search(bimg, reader);        
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);       
+        return hits;
     }
+       
          
-     
-      public ArrayList testSearchFCTH(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createFCTHImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+     public ImageSearchHits testSearchGabor(BufferedImage bimg,IndexReader reader) throws IOException {
+        
+        ImageSearcher searcher = ImageSearcherFactory.createGaborImageSearcher(5);//createDefaultSearcher(); //createColorHistogramImageSearcher(10);//       
+        ImageSearchHits hits = searcher.search(bimg, reader);       
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
-    }
+        hits = searcher.search(document, reader);        
+        return hits;
+    } 
          
       
-       public ArrayList testSearchJCD(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createJCDImageSearcher(5);
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+       public ImageSearchHits testSearchJCD(BufferedImage bimg,IndexReader reader) throws IOException {       
+        ImageSearcher searcher = ImageSearcherFactory.createJCDImageSearcher(5);        
+        ImageSearchHits hits = searcher.search(bimg, reader);        
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);       
+        return hits;
     }
        
        
-       public ArrayList testSearchCoefficientHistogram(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createJpegCoefficientHistogramImageSearcher(5);
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+       public ImageSearchHits testSearchCoefficientHistogram(BufferedImage bimg,IndexReader reader) throws IOException {       
+        ImageSearcher searcher = ImageSearcherFactory.createJpegCoefficientHistogramImageSearcher(5);       
+        ImageSearchHits hits = searcher.search(bimg, reader);       
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
         hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        return hits;
     }
        
        
-       public ArrayList testSearchScalableColor(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createScalableColorImageSearcher(5);
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+       public ImageSearchHits testSearchScalableColor(BufferedImage bimg,IndexReader reader) throws IOException {        
+        ImageSearcher searcher = ImageSearcherFactory.createScalableColorImageSearcher(5);        
+        ImageSearchHits hits = searcher.search(bimg, reader);        
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);       
+        return hits;
     }
        
        
         
-       public ArrayList testSearchTamura(BufferedImage bimg) throws IOException {
-        ArrayList listaImagenesConcidencias = new ArrayList();
-        // Opening an IndexReader (Lucene v3.0+)
-        IndexReader reader = IndexReader.open(FSDirectory.open(new File(indexPath)));
-        // Creating an ImageSearcher
-        ImageSearcher searcher = ImageSearcherFactory.createTamuraImageSearcher(5);
-        //createWeightedSearcher(10, 0.2f, 0.8f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.8f, 0.0f, 1.0f);
-        // ImageSearcher searcher = ImageSearcherFactory.createWeightedSearcher(10, 0.0f, 1.0f, 0.0f);
-        // Reading the sample image, which is our "query"
-        // Search for similar images
-        ImageSearchHits hits = searcher.search(bimg, reader);
-        System.out.println(Integer.toString(hits.length()));
-        // print out results
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            // System.out.println(hits.score(i) + ": " + hits.doc(i).toString());
-        }
-        // Get a document from the results
+       public ImageSearchHits testSearchTamura(BufferedImage bimg,IndexReader reader) throws IOException {        
+        ImageSearcher searcher = ImageSearcherFactory.createTamuraImageSearcher(5);       
+        ImageSearchHits hits = searcher.search(bimg, reader);       
         Document document = hits.doc(0);
         // Search for similar Documents based on the image  features
-        hits = searcher.search(document, reader);
-
-        for (int i = 0; i < 4; i++) {
-            System.out.println(hits.score(i) + ": "
-                    + hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-            listaImagenesConcidencias.add(hits.doc(i).getFieldable(DocumentBuilder.FIELD_NAME_IDENTIFIER).stringValue());
-        }
-        return listaImagenesConcidencias;
+        hits = searcher.search(document, reader);       
+        return hits;
     }
       
       
