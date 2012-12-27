@@ -255,66 +255,14 @@ public class FrameBuscar extends javax.swing.JFrame {
                 Logger.getLogger(FrameIndexing.class.getName()).log(Level.SEVERE, null, ex);
           }
         
-         
-         Hashtable dicCategoria  = TablaDiccionario(); 
-         
-        String TextoArea = "";
-               
-               
-        for (Object texto : listaImagenes)
-        {
-           String CategoriaDeLaImagen = dicCategoria.get(texto).toString();
-           TextoArea += CategoriaDeLaImagen + "  " +  texto.toString() + " \n\r";
-           
-           if(listaImagenesFinal.containsKey(CategoriaDeLaImagen))
-           {
-               listaImagenesFinal.put(CategoriaDeLaImagen, (int)listaImagenesFinal.get(CategoriaDeLaImagen) + 1);
-                //crear otro hashtable<string,int> conteos 
-                //conteos.put("gato",1);
-                //conteos.put("gato", conteos.get("gato")+1);
-           }
-           else
-           {
-                listaImagenesFinal.put(CategoriaDeLaImagen,1);
-           }           
-         }                    
+         KnnAnalisis knn = new KnnAnalisis();
+                   
     
-        this.jTextArea2.setText(TextoArea);
+        this.jTextArea2.setText(knn.analizarKnn(listaImagenesFinal, listaImagenes));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     
-    public Hashtable TablaDiccionario()
-    {
-        Hashtable dicCategoria  = new Hashtable(); 
-        try
-        {
-            // Open the file that is the first 
-            // command line parameter
-            FileInputStream fstream = new FileInputStream("Diccionario.txt");
-            // Get the object of DataInputStream
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
-            //Read File Line By Line
-            while ((strLine = br.readLine()) != null)  
-            {
-                int indexComa = strLine.indexOf(",");
-                String llave = strLine.substring(0, indexComa);
-                String Categoria = strLine.substring(indexComa+1,strLine.length());
-                dicCategoria.put(llave, Categoria);
-            // Print the content on the console
-            //   System.out.println (strLine);
-            }
-            //Close the input stream
-            in.close();
-         }
-        catch (Exception e)
-            {//Catch exception if any
-                System.err.println("Error: " + e.getMessage());
-            }
-        
-        return dicCategoria;
-    }
+   
     
     
     
