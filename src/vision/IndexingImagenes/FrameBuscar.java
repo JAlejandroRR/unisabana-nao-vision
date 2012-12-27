@@ -34,9 +34,8 @@ public class FrameBuscar extends javax.swing.JFrame {
      * Creates new form FrameBuscar
      */
      JFileChooser fc = new JFileChooser();
-     String foto = new String();
-     Hashtable listaImagenesPesos  = new Hashtable();
-     Hashtable listaImagenesPesosFinal  = new Hashtable();
+     String foto = new String();     
+     Hashtable listaImagenesFinal  = new Hashtable();
       ArrayList listaImagenes = new ArrayList();
       
     public FrameBuscar() {
@@ -191,64 +190,64 @@ public class FrameBuscar extends javax.swing.JFrame {
                 if (opcion.equals("Auto Color Correlogram"))
                 {
                     busqueda.setIndexPath("Auto-Color");
-                      listaImagenes =  busqueda.testSearchAutoColorCorrelogram(bimg);
+                      listaImagenes =  busqueda.DefaultImplementacion(bimg,"Auto Color Correlogram");
                 }
                 if (opcion.equals("CEDD Document"))
                 {
                     busqueda.setIndexPath("CEDD-Document");
-                      listaImagenes =  busqueda.testSearchCEDD(bimg);
+                      listaImagenes =  busqueda.DefaultImplementacion(bimg,"CEDD Document");
                 }
                 if (opcion.equals("Color Histogram"))
                 {
                     busqueda.setIndexPath("Color-Histogram");
-                      listaImagenes =  busqueda.testSearchColorHistogram(bimg);
+                      listaImagenes =  busqueda.DefaultImplementacion(bimg,"Color Histogram");
                 }
                  if (opcion.equals("Color Layout"))
                 {
                     busqueda.setIndexPath("Color-Layout");
-                    listaImagenes = busqueda.testSearchColorLayout(bimg);
+                    listaImagenes = busqueda.DefaultImplementacion(bimg,"Color Layout");
                 }
                   if (opcion.equals("Default Document"))
                 {
                     busqueda.setIndexPath("Default-Document");
-                     listaImagenesPesos = busqueda.testSearchDefault(bimg);
+                     listaImagenes = busqueda.DefaultImplementacion(bimg,"Default Document");
                 }
                    if (opcion.equals("Edge Histogram"))
                 {
                     busqueda.setIndexPath("Edge-Histogram");
-                      listaImagenes = busqueda.testSearchEdgeHistogram(bimg);
+                      listaImagenes = busqueda.DefaultImplementacion(bimg,"Edge Histogram");
                 } 
                  if (opcion.equals("FCTHD"))
                 {
                      busqueda.setIndexPath("FCTHD");
-                      listaImagenes =  busqueda.testSearchFCTH(bimg);
+                      listaImagenes =  busqueda.DefaultImplementacion(bimg,"FCTHD");
                 } 
                
                  if (opcion.equals("GaborDocument"))
                 {
                      busqueda.setIndexPath("GaborDocument");
-                      listaImagenes =  busqueda.testSearchGabor(bimg);
+                      listaImagenes =  busqueda.DefaultImplementacion(bimg,"GaborDocument");
                 }   
                  if (opcion.equals("JCDDocument"))
                 {
                     busqueda.setIndexPath("JCDDocument");
-                     listaImagenes =   busqueda.testSearchJCD(bimg);
+                     listaImagenes =   busqueda.DefaultImplementacion(bimg,"JCDDocument");
                 }
                   if (opcion.equals("JpegCoefficientHistogramDocument"))
                 {
                      busqueda.setIndexPath("JpegCoefficientHistogramDocument");
-                     listaImagenes =   busqueda.testSearchCoefficientHistogram(bimg);
+                     listaImagenes =   busqueda.DefaultImplementacion(bimg,"JpegCoefficientHistogramDocument");
                 }
                    if (opcion.equals("ScalableColor"))
                 {
                      busqueda.setIndexPath("ScalableColor");
-                      listaImagenes =  busqueda.testSearchScalableColor(bimg);
+                      listaImagenes =  busqueda.DefaultImplementacion(bimg,"ScalableColor");
                 }
                    
                     if (opcion.equals("TamuraDocument"))
                 {
                     busqueda.setIndexPath("TamuraDocument");
-                     listaImagenes =   busqueda.testSearchTamura(bimg);
+                     listaImagenes =   busqueda.DefaultImplementacion(bimg,"TamuraDocument");
                 }
         } 
          catch (IOException ex) 
@@ -258,6 +257,7 @@ public class FrameBuscar extends javax.swing.JFrame {
         
          
          Hashtable dicCategoria  = TablaDiccionario(); 
+         
         String TextoArea = "";
                
                
@@ -265,34 +265,20 @@ public class FrameBuscar extends javax.swing.JFrame {
         {
            String CategoriaDeLaImagen = dicCategoria.get(texto).toString();
            TextoArea += CategoriaDeLaImagen + "  " +  texto.toString() + " \n\r";
-        }
-        
-        Enumeration e = listaImagenesPesos.keys();  
-                Object obj;  
-                   while (e.hasMoreElements()) 
-                   {                        
-                      obj = e.nextElement();                        
-                      if(listaImagenesPesosFinal.containsKey(dicCategoria.get(obj).toString()))
-                      {
-                        String categoria =  dicCategoria.get(obj).toString();                        
-                        float val3 = Float.valueOf(listaImagenesPesosFinal.get(categoria).toString()) + Float.valueOf(listaImagenesPesos.get(obj).toString());
-                        listaImagenesPesosFinal.put(dicCategoria.get(obj).toString(),val3);
-                      }
-                      else
-                      {
-                        listaImagenesPesosFinal.put(dicCategoria.get(obj).toString(),listaImagenesPesos.get(obj));
-                      }
-                      System.out.println(" key "+ dicCategoria.get(obj).toString() +": "+ listaImagenesPesos.get(obj));  
-                   }           
-        
-        float Value; 
-       
-         ArrayList myArrayList=new ArrayList(listaImagenesPesosFinal.entrySet());
-      
-         //Sort the values based on values first and then keys.
-        Collections.sort(myArrayList, new MyComparator());
-         
-        
+           
+           if(listaImagenesFinal.containsKey(CategoriaDeLaImagen))
+           {
+               listaImagenesFinal.put(CategoriaDeLaImagen, (int)listaImagenesFinal.get(CategoriaDeLaImagen) + 1);
+                //crear otro hashtable<string,int> conteos 
+                //conteos.put("gato",1);
+                //conteos.put("gato", conteos.get("gato")+1);
+           }
+           else
+           {
+                listaImagenesFinal.put(CategoriaDeLaImagen,1);
+           }           
+         }                    
+    
         this.jTextArea2.setText(TextoArea);
     }//GEN-LAST:event_jButton3ActionPerformed
 
