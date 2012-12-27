@@ -94,10 +94,50 @@ public class ImagenIndexamiento
         }
     }
 
-    public void testCreateIndexAutoColorCorrelogram() throws IOException {
-        // Create an appropriate DocumentBuilder
-        System.out.println("entro index");
-        DocumentBuilder builder = DocumentBuilderFactory.getAutoColorCorrelogramDocumentBuilder();
+    
+     public void DefaultImplementacion(String caracteristica) throws IOException
+    {
+      DocumentBuilder builder = null;
+        switch (caracteristica) 
+        {
+            case "Auto Color Correlogram":
+                builder = testCreateIndexAutoColorCorrelogram();
+                break;
+            case "CEDD Document":
+                builder = testCreateIndexCEDDDocument();
+                break;
+            case "Default Document":
+                builder = testCreateIndexDefaultDocument();
+                break;
+            case "Color Histogram":
+                builder = testCreateIndexColorHistogram();
+                break;                
+            case "Color Layout":
+                builder = testCreateIndexColorLayout();
+                break;
+            case "Edge Histogram":
+                builder = testCreateIndexEdgeHistogram();
+                break;
+            case "FCTHD":
+                builder = testCreateIndexFCTHDocument();
+                break;
+            case "GaborDocument":
+                builder = testCreateIndexGaborDocument();
+                break;
+            case "JCDDocument":
+                builder = testCreateIndexJCDDocument();
+                break;
+            case "JpegCoefficientHistogramDocument":
+                builder = testCreateIndexJpegCoefficientHistogram();
+                break;
+            case "ScalableColor":
+                builder = testCreateIndexScalableColor();
+                break;
+            case "TamuraDocument":
+                builder = testCreateIndexTamuraDocument();
+                break;                                      
+          
+        }        
         try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
             for (File identifier : testFiles) {
                 // Build the Lucene Documents
@@ -107,200 +147,101 @@ public class ImagenIndexamiento
                 System.out.println(identifier.getName());
             }
             iw.optimize();
-        }
+        }      
+       
     }
     
-     public void testCreateIndexCEDDDocument() throws IOException {
+    
+    public DocumentBuilder testCreateIndexAutoColorCorrelogram() throws IOException {
+        // Create an appropriate DocumentBuilder
+        System.out.println("entro index");
+        DocumentBuilder builder = DocumentBuilderFactory.getAutoColorCorrelogramDocumentBuilder();        
+        return builder;
+    }
+    
+     public DocumentBuilder testCreateIndexCEDDDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getCEDDDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
      
-      public void testCreateIndexColorHistogram() throws IOException {
+      public DocumentBuilder testCreateIndexColorHistogram() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
-        DocumentBuilder builder = DocumentBuilderFactory.getColorHistogramDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        DocumentBuilder builder = DocumentBuilderFactory.getColorHistogramDocumentBuilder();        
+        return builder;
     }
       
-       public void testCreateIndexColorLayout() throws IOException {
+       public DocumentBuilder testCreateIndexColorLayout() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getColorLayoutBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
        
-         public void testCreateIndexDefaultDocument() throws IOException {
+       public DocumentBuilder testCreateIndexDefaultDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
-        DocumentBuilder builder = DocumentBuilderFactory.getDefaultDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        DocumentBuilder builder = DocumentBuilderFactory.getDefaultDocumentBuilder();  
+        return builder;
     }
    
-    public void testCreateIndexEdgeHistogram() throws IOException {
+    public DocumentBuilder testCreateIndexEdgeHistogram() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getEdgeHistogramBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
     
-    public void testCreateIndexFCTHDocument() throws IOException {
+    public DocumentBuilder testCreateIndexFCTHDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getFCTHDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
     
-     public void testCreateIndexFullDocument() throws IOException {
+     public DocumentBuilder testCreateIndexFullDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getFullDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
    
-     public void testCreateIndexGaborDocument() throws IOException {
+     public DocumentBuilder testCreateIndexGaborDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getGaborDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+       return builder;
     }
     
-     public void testCreateIndexJCDDocument() throws IOException {
+     public DocumentBuilder testCreateIndexJCDDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getJCDDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
 
-        public void testCreateIndexJpegCoefficientHistogram() throws IOException {
+        public DocumentBuilder testCreateIndexJpegCoefficientHistogram() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
-        DocumentBuilder builder = DocumentBuilderFactory.getJpegCoefficientHistogramDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        DocumentBuilder builder = DocumentBuilderFactory.getJpegCoefficientHistogramDocumentBuilder();   
+        return builder;
     }
      
         
-         public void testCreateIndexScalableColor() throws IOException {
+         public DocumentBuilder testCreateIndexScalableColor() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getScalableColorBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
 
-        public void testCreateIndexTamuraDocument() throws IOException {
+        public DocumentBuilder testCreateIndexTamuraDocument() throws IOException {
         // Create an appropriate DocumentBuilder
         System.out.println("entro index");
         DocumentBuilder builder = DocumentBuilderFactory.getTamuraDocumentBuilder();
-        try (IndexWriter iw = new IndexWriter(FSDirectory.open(new File(indexPath)), new SimpleAnalyzer(), true, IndexWriter.MaxFieldLength.UNLIMITED)) {
-            for (File identifier : testFiles) {
-                // Build the Lucene Documents
-                Document doc = builder.createDocument(new FileInputStream(identifier.getPath()), identifier.getName());
-                // Add the Documents to the index
-                iw.addDocument(doc);
-                System.out.println(identifier.getName());
-            }
-            iw.optimize();
-        }
+        return builder;
     }
          
 }
