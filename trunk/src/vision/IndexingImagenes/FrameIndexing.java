@@ -182,68 +182,68 @@ public class FrameIndexing extends javax.swing.JFrame {
                 if (opcion.equals("Auto Color Correlogram"))
                 {
                     index.setIndexPath("Auto-Color");
-                        index.testCreateIndexAutoColorCorrelogram();
+                        index.DefaultImplementacion("Auto Color Correlogram");
                 }
                 if (opcion.equals("CEDD Document"))
                 {
                     index.setIndexPath("CEDD-Document");
-                        index.testCreateIndexCEDDDocument();
+                        index.DefaultImplementacion("CEDD Document");
                 }
                 if (opcion.equals("Color Histogram"))
                 {
                     index.setIndexPath("Color-Histogram");
-                        index.testCreateIndexColorHistogram();
+                        index.DefaultImplementacion("Color Histogram");
                 }
                  if (opcion.equals("Color Layout"))
                 {
                     index.setIndexPath("Color-Layout");
-                        index.testCreateIndexColorLayout();
+                        index.DefaultImplementacion("Color Layout");
                 }
                   if (opcion.equals("Default Document"))
                 {
                     index.setIndexPath("Default-Document");
-                        index.testCreateIndexDefaultDocument();
+                        index.DefaultImplementacion("Default Document");
                 }
                    if (opcion.equals("Edge Histogram"))
                 {
                     index.setIndexPath("Edge-Histogram");
-                        index.testCreateIndexEdgeHistogram();
+                        index.DefaultImplementacion("Edge Histogram");
                 } 
                  if (opcion.equals("FCTHD"))
                 {
                      index.setIndexPath("FCTHD");
-                        index.testCreateIndexFCTHDocument();
+                        index.DefaultImplementacion("FCTHD");
                 } 
                  if (opcion.equals("FullDocument"))
                 {
                     index.setIndexPath("FullDocument");
-                        index.testCreateIndexFullDocument();
+                        index.DefaultImplementacion("FullDocument");
                 } 
                  if (opcion.equals("GaborDocument"))
                 {
                      index.setIndexPath("GaborDocument");
-                        index.testCreateIndexFullDocument();
+                        index.DefaultImplementacion("GaborDocument");
                 }   
                  if (opcion.equals("JCDDocument"))
                 {
                     index.setIndexPath("JCDDocument");
-                        index.testCreateIndexJCDDocument();
+                        index.DefaultImplementacion("JCDDocument");
                 }
                   if (opcion.equals("JpegCoefficientHistogramDocument"))
                 {
                      index.setIndexPath("JpegCoefficientHistogramDocument");
-                        index.testCreateIndexJpegCoefficientHistogram();
+                        index.DefaultImplementacion("JpegCoefficientHistogramDocument");
                 }
                    if (opcion.equals("ScalableColor"))
                 {
                      index.setIndexPath("ScalableColor");
-                        index.testCreateIndexScalableColor();
+                        index.DefaultImplementacion("ScalableColor");
                 }
                    
                     if (opcion.equals("TamuraDocument"))
                 {
                     index.setIndexPath("TamuraDocument");
-                        index.testCreateIndexTamuraDocument();
+                        index.DefaultImplementacion("TamuraDocument");
                 }
         } 
          catch (IOException ex) 
