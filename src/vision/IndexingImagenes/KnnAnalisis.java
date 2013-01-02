@@ -50,8 +50,9 @@ public class KnnAnalisis
         return dicCategoria;
     }
     
-    public String analizarKnn( Hashtable listaImagenesFinal,ArrayList listaImagenes)
+    public String analizarKnn( ArrayList listaImagenes)
     {
+        Hashtable listaImagenesFinal  = new Hashtable(); 
          Hashtable dicCategoria  = CargarTablaDiccionario(); 
          
         String TextoArea = "";
