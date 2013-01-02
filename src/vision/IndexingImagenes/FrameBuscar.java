@@ -35,7 +35,7 @@ public class FrameBuscar extends javax.swing.JFrame {
      */
      JFileChooser fc = new JFileChooser();
      String foto = new String();     
-     Hashtable listaImagenesFinal  = new Hashtable();
+     
       ArrayList listaImagenes = new ArrayList();
       
     public FrameBuscar() {
@@ -258,7 +258,7 @@ public class FrameBuscar extends javax.swing.JFrame {
          KnnAnalisis knn = new KnnAnalisis();
                    
     
-        this.jTextArea2.setText(knn.analizarKnn(listaImagenesFinal, listaImagenes));
+        this.jTextArea2.setText(knn.analizarKnn( listaImagenes));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     
