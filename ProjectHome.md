@@ -1,0 +1,1 @@
+Se utiliza la libreria jnaoqi.jar para reconocer una imagen vista desde el nao
